@@ -1,22 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
 
-/* See: https://www.infragistics.com/products/ignite-ui-angular/angular/components/themes.html */
-@import '~material-design-icons/iconfont/material-icons.css';
-@import '~typeface-titillium-web/index.css';
-@import '~igniteui-angular/lib/core/styles/themes/index';
-@import 'app-palette';
+// Standard CSS normalize, comment out if not required or using a different module
+@use "~minireset.css/minireset";
+@use "igniteui-angular/theming" as *;
 
-@include igx-core();
-@include igx-theme($app-palette);
+@include core();
+@include typography();
+@include light-theme($light-material-palette);
 
-//$navbar-theme: igx-navbar-theme($background: #731963)
-//@include igx-navbar($navbar-theme)
+body {
+  background: hsla(var(--igx-surface-500));
+  color: var(--igx-surface-500-contrast);
+}
 
-// common style
-.igx-grid__th {
-  background-color: #45bdff;
+html, body {
+  height: 100%;
+}
 
-  & + & {
-    border-left: 1px solid igx-color($app-palette, grays, 300);
+.igx-typography {
+  h1, h2, h3, h4, h5, h6, p, .igx-typography__body-1 {
+    margin: 0;
   }
+}
+
+.outer-wrapper > *:not(router-outlet) {
+  width: 100%;
 }

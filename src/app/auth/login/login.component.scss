@@ -1,0 +1,72 @@
+@import 'app-palette';
+
+.login {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.login-background {
+  position: absolute;
+  top: 240px;
+  left: 320px;
+  width: 880px;
+  height: 482px;
+}
+
+/** @define login-text */
+
+.login-text {
+  position: absolute;
+  top: 400px;
+  left: 672px;
+  width: 448px;
+}
+
+.login-text__title {
+  margin: 0;
+  font-size: 34px;
+}
+
+/** @end */
+
+/** @define login-form */
+
+.login-form {
+  position: absolute;
+  top: 288px;
+  left: 240px;
+  width: 360px;
+  height: 384px;
+  padding: 16px;
+  background-color: #ebebeb;
+}
+
+.login-form__title {
+  margin-top: 0;
+  font-size: 34px;
+}
+
+.login-form__input {
+  height: 54px;
+  margin-top: 32px;
+}
+
+.login-form__checkbox {
+  margin-top: 24px;
+}
+
+.login-form__action {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.login-form__link {
+  text-align: right;
+}
+
+/** @end */
+
+.error {
+  color: red;
+}

@@ -1,0 +1,101 @@
+@import 'app-palette';
+
+:host {
+  display: block;
+  width: 960px;
+  margin: auto;
+}
+
+.detail {
+  margin-bottom: 24px;
+}
+
+.create-budget-button {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.allocation-form {
+  width: 410px;
+  height: 128px;
+  padding: 8px 36px;
+}
+
+.budget-form {
+  width: 410px;
+  height: 200px;
+  padding: 8px 36px;
+}
+
+.cancel-button {
+  color: igx-color($app-palette, grays, 600);
+}
+
+.delete-button {
+  color: igx-color($app-palette, error);
+}
+
+/** @define overview */
+
+.overview {
+  width: 100%;
+  padding: 16px;
+  background-color: #fff;
+}
+
+.overview__label {
+  margin: 0;
+  font-size: 34px;
+  line-height: 34px;
+}
+
+.overview__value {
+  font-size: 34px;
+  line-height: 34px;
+  text-align: right;
+}
+
+/** @end */
+
+/** @define total-setting */
+
+.total-setting {
+  width: 100%;
+  padding: 16px;
+  background-color: #fff;
+}
+
+.total-setting__title {
+  margin: 0;
+  font-size: 34px;
+  line-height: 34px;
+}
+
+.total-setting__form {
+}
+
+.total-setting__submit-button {
+  width: 100%;
+  margin-top: 8px;
+}
+
+/** @end */
+
+// TODO: need to think of better way
+::ng-deep {
+  .allocated-cell {
+    align-self: center;
+  }
+
+  .delete-cell {
+    align-self: center;
+    padding: 0;
+    text-align: center;
+  }
+}
+
+:host ::ng-deep {
+  .igx-dialog__window {
+    overflow: visible;
+  }
+}

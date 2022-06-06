@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* See: https://www.infragistics.com/products/ignite-ui-angular/angular/components/themes.html */
+@import '~material-design-icons/iconfont/material-icons.css';
+@import '~typeface-titillium-web/index.css';
+@import '~igniteui-angular/lib/core/styles/themes/index';
+@import 'app-palette';
+
+@include igx-core();
+@include igx-theme($app-palette);
+
+//$navbar-theme: igx-navbar-theme($background: #731963)
+//@include igx-navbar($navbar-theme)
+
+// common style
+.igx-grid__th {
+  background-color: #45bdff;
+
+  & + & {
+    border-left: 1px solid igx-color($app-palette, grays, 300);
+  }
+}

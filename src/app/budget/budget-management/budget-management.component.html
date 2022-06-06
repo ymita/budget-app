@@ -1,0 +1,173 @@
+<article igxLayout igxLayoutDir="row" igxLayoutWrap="wrap" igxLayoutJustify="space-between">
+
+  <section class="detail" igxFlex="0 0 100%">
+    <ng-container *ngIf="budgetsMap">
+      <igx-grid [data]="budgetsMap" width="960px" [height]="null" (onCellClick)="openAllocationDialog($event)">
+        <igx-column width="176px" field="name" header="Budget" dataType="string" [sortable]="true"></igx-column>
+        <igx-column width="128px" field="totalSpendable" header="Total Spendable" dataType="number" [sortable]="true">
+          <ng-template igxCell let-value>
+            {{ value | currency:'USD':'symbol':'1.0-0' }}
+          </ng-template>
+        </igx-column>
+        <igx-column width="144px" field="monthlySpendable" header="Monthly Spendable" dataType="number" [sortable]="true">
+          <ng-template igxCell let-value>
+            {{ value | currency:'USD':'symbol':'1.0-0' }}
+          </ng-template>
+        </igx-column>
+        <igx-column width="200px" field="allocated" header="Allocated" dataType="number" cellClasses="allocated-cell" [sortable]="true">
+          <ng-template igxCell let-allocated let-cell="cell">
+            <igx-linear-bar
+              [textVisibility]="false"
+              [animate]="false"
+              [striped]="true"
+              [max]="cell.row.rowData['totalSpendable']"
+              [value]="allocated">
+            </igx-linear-bar>
+          </ng-template>
+        </igx-column>
+        <igx-column width="104px" field="remaining" header="Remaining" dataType="number" [sortable]="true">
+          <ng-template igxCell let-value>
+            {{ value | currency:'USD':'symbol':'1.0-0' }}
+          </ng-template>
+        </igx-column>
+        <igx-column width="144px" field="recurrence" header="Schedule" dataType="string" [sortable]="true"></igx-column>
+        <igx-column width="64px" cellClasses="delete-cell">
+          <ng-template igxCell let-cell="cell">
+            <button
+              igxButton="icon"
+              igxRipple
+              (click)="openBudgetDialog(cell.row.rowData)">
+              <igx-icon name="edit"></igx-icon>
+            </button>
+          </ng-template>
+        </igx-column>
+      </igx-grid>
+
+      <igx-dialog #allocationDialog
+        [title]="allocatingBudgetTitle"
+        [closeOnOutsideSelect]="true">
+        <form class="allocation-form" *ngIf="allocatonForm" [formGroup]="allocatonForm"
+          igxLayout igxLayoutDir="column" igxLayoutJustify="space-between">
+          <div igxLayout igxLayoutJustify="space-between">
+            <label igxFlex="0 0 auto">{{ slider.value | currency:'USD':'symbol':'1.0-0' }}</label>
+            <label igxFlex="0 0 auto">{{ editingBudget?.monthlySpendable | currency:'USD':'symbol':'1.0-0' }}</label>
+          </div>
+          <!--
+            https://github.com/IgniteUI/igniteui-angular/issues/920
+            Due to the #920, upperBound has to be set as well as maxValue.
+          -->
+          <igx-slider #slider
+            [minValue]="0"
+            [maxValue]="editingBudget?.monthlySpendable"
+            [upperBound]="editingBudget?.monthlySpendable"
+            formControlName="amount">
+          </igx-slider>
+        </form>
+        <igx-dialog-actions>
+          <button type="button" class="cancel-button" igxButton (click)="closeAllocationDialog()">
+            CANCEL
+          </button>
+          <button type="button" igxButton (click)="allocateBudget()">
+            SAVE
+          </button>
+        </igx-dialog-actions>
+      </igx-dialog>
+    </ng-container>
+
+    <button
+      class="create-budget-button"
+      igxButton="raised"
+      igxRipple
+      (click)="openBudgetDialog()">
+      CREATE A NEW BUDGET
+    </button>
+
+    <igx-dialog #budgetDialog
+      [title]="editingBudget ? 'Edit Budget' : 'New Budget'"
+      [closeOnOutsideSelect]="true">
+      <form class="budget-form" *ngIf="budgetForm" [formGroup]="budgetForm"
+        igxLayout igxLayoutDir="column" igxLayoutJustify="space-between">
+        <igx-input-group>
+          <input
+            type="text"
+            formControlName="name"
+            igxInput>
+          <label igxLabel>Name</label>
+        </igx-input-group>
+        <app-dropdown
+          label="Recurrence"
+          [items]="recurrences"
+          formControlName="recurrence">
+        </app-dropdown>
+        <div igxLayout igxLayoutJustify="space-between">
+          <igx-input-group igxFlex="0 0 224px">
+            <input
+              type="number"
+              formControlName="amount"
+              igxInput>
+            <label igxLabel>Amount</label>
+          </igx-input-group>
+          <app-dropdown
+            label="Currency"
+            [items]="currencies"
+            formControlName="currency"
+            igxFlex="0 0 88px">
+          </app-dropdown>
+        </div>
+      </form>
+      <igx-dialog-actions>
+        <button type="button" class="cancel-button" igxButton (click)="closeBudgetDialog()">
+          CANCEL
+        </button>
+        <button type="button" class="delete-button" igxButton (click)="removeBudget()" *ngIf="editingBudget">
+          DELETE
+        </button>
+        <button type="button" igxButton (click)="editingBudget ? editBudget() : createBudget()">
+          {{ editingBudget ? 'SAVE' : 'CREATE' }}
+        </button>
+      </igx-dialog-actions>
+    </igx-dialog>
+
+  </section>
+
+  <section class="overview" igxFlex="0 0 472px"
+    igxLayout igxLayoutDir="column" igxLayoutJustify="space-between">
+    <div igxLayout>
+      <h2 class="overview__label" igxFlex="0 0 50%">Total Budget</h2>
+      <span class="overview__value" igxFlex="0 0 50%">{{ totalBudget?.totalAmount | currency:'USD':'symbol':'1.0-0' }}</span>
+    </div>
+    <div igxLayout>
+      <h2 class="overview__label" igxFlex="0 0 50%">Unallocated Budget</h2>
+      <span class="overview__value" igxFlex="0 0 50%">{{ unallocatedAmount | currency:'USD':'symbol':'1.0-0' }}</span>
+    </div>
+  </section>
+
+  <section class="total-setting" igxFlex="0 0 472px">
+    <h2 class="total-setting__title">Set Total Budget</h2>
+    <form class="total-setting__form" *ngIf="totalBudgetForm" [formGroup]="totalBudgetForm">
+      <div igxLayout igxLayoutJustify="space-between">
+        <igx-input-group igxFlex="0 0 336px">
+          <input
+            type="number"
+            formControlName="totalAmount"
+            igxInput>
+          <label igxLabel>Amount</label>
+        </igx-input-group>
+        <app-dropdown
+          label="Currency"
+          [items]="currencies"
+          formControlName="currency"
+          igxFlex="0 0 88px">
+        </app-dropdown>
+      </div>
+      <button
+        class="total-setting__submit-button"
+        igxButton="raised"
+        igxRipple
+        (click)="setTotalBudget()">
+        SET
+      </button>
+    </form>
+  </section>
+
+</article>

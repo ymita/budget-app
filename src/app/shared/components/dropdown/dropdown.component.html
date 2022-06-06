@@ -1,0 +1,22 @@
+<div class="dropdown">
+  <igx-input-group [igxToggleAction]="toggleRef">
+    <input type="text" class="dropdown__text" [value]="selectedText" readonly igxInput>
+    <label igxLabel>{{ label }}</label>
+    <igx-suffix>
+      <igx-icon name="arrow_drop_down"></igx-icon>
+    </igx-suffix>
+  </igx-input-group>
+  <div class="dropdown__list-container" igxToggle #toggleRef="toggle">
+    <igx-list class="dropdown__list" (onItemClicked)="onItemClicked($event)">
+      <div class="dropdown__virtual-container">
+        <igx-list-item
+          class="dropdown__list-item"
+          *igxFor="let item of items; scrollOrientation: 'vertical'; containerSize: '240px'; itemSize: '48px'"
+          [ngClass]="{ 'is-selected': item === selectedItem }"
+          igxRipple>
+          {{ item[textKey] || item }}
+        </igx-list-item>
+      </div>
+    </igx-list>
+  </div>
+</div>

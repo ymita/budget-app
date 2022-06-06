@@ -1,0 +1,30 @@
+@import 'app-palette';
+
+/** @define reports */
+
+.reports {
+  width: 960px;
+  margin: auto;
+}
+
+.reports__title {
+  margin: 0;
+  color: $app-primary-color;
+  font-size: 34px;
+}
+
+.reports__chart {
+  height: 540px;
+  margin-top: 16px;
+  padding: 0 32px;
+}
+
+.reports__grid {
+  margin-top: 32px;
+}
+
+/** @end */
+
+:host::ng-deep .igx-grid__tr:last-child {
+  background-color: lighten(igx-color($app-palette, primary, 500), 40);
+}

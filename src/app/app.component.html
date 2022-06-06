@@ -1,0 +1,39 @@
+<div class="app">
+
+  <nav class="app__side">
+    <igx-nav-drawer
+      width="242px"
+      pinThreshold="false"
+      #navDrawer>
+      <ng-template igxDrawer>
+        <a *ngFor="let navItem of navigationItems"
+          class="nav-item"
+          igxDrawerItem
+          igxRipple
+          routerLink="{{ navItem.link }}"
+          routerLinkActive="igx-nav-drawer__item--active">
+          <span class="nav-item__icon">
+            <igx-icon name="{{ navItem.icon }}"></igx-icon>
+          </span>
+          <span class="nav-item__text">{{navItem.text}}</span>
+        </a>
+      </ng-template>
+    </igx-nav-drawer>
+  </nav>
+
+  <section class="app__main content">
+    <header class="content__header">
+      <igx-navbar
+        title="{{ title }}"
+        actionButtonIcon="menu"
+        (onAction)="navDrawer.toggle()">
+      </igx-navbar>
+    </header>
+
+    <main role="main" class="content__main">
+      <router-outlet></router-outlet>
+      <app-loader [loading]="loading$ | async"></app-loader>
+    </main>
+  </section>
+
+</div>

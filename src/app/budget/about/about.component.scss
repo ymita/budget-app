@@ -1,0 +1,10 @@
+.about {
+  &__card {
+    width: 694px;
+    margin: auto;
+
+    & + & {
+      margin-top: 8px;
+    }
+  }
+}

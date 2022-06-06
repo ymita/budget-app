@@ -1,0 +1,42 @@
+.app {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  &__side {
+    height: 100%;
+  }
+
+  &__main {
+    flex: 1 1 auto;
+    height: 100%;
+  }
+}
+
+.content {
+  display: flex;
+  flex-flow: column nowrap;
+  background-color: rgba($color: #09f, $alpha: 0.1);
+
+  &__header {
+    flex: 0 0 56px;
+  }
+
+  &__main {
+    flex: 0 1 calc(100vh - 56px);
+    width: 100vw;
+    padding: 24px;
+    overflow: auto;
+  }
+}
+
+.nav-item {
+  display: flex;
+  flex-flow: row nowrap;
+
+  &__icon {
+    flex: 0 0 56px;
+  }
+}
